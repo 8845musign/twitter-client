@@ -122,9 +122,11 @@ class Tweet extends Component {
           <div className={classes.body}>
             <div className={classes.name}>
               {`${status.user.name}@${status.user.screen_name}`}
-              {vagueTime.get({
-                to: new Date(status.created_at)
-              })}
+              <span styleName="time">
+                {vagueTime.get({
+                  to: new Date(status.created_at)
+                })}
+              </span>
             </div>
 
             <div className={classes.bodyText}>

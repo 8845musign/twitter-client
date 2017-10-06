@@ -19,8 +19,10 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-inline-dotenv": "^1.1.1",
+    "babel-plugin-react-css-modules": "^3.3.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.7",
     "del": "^3.0.0",
     "electron": "~1.6.2",
     "electron-connect": "^0.6.2",
@@ -35,11 +37,11 @@
     "gulp": "^3.9.1",
     "gulp-load-plugins": "^1.5.0",
     "run-sequence": "^2.2.0",
+    "style-loader": "^0.19.0",
     "twit": "^2.2.9",
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
-    "babel-plugin-react-css-modules": "^3.3.1",
     "linkify": "^0.2.1",
     "linkifyjs": "^2.1.5",
     "material-ui": "next",
