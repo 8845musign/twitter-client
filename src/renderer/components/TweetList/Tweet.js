@@ -1,5 +1,6 @@
 import React, { Component } from 'React'
 import PropTypes from 'prop-types'
+import vagueTime from 'vague-time'
 import Avatar from 'material-ui/Avatar'
 import Linkify from 'linkifyjs/react'
 import { shell } from 'electron'
@@ -9,6 +10,8 @@ import Typography from 'material-ui/Typography'
 import Favorite from './Favorite'
 import Retweet from './Retweet'
 import ToolButton from './ToolButton'
+
+import './Tweet.css'
 
 const isRetweet = (tweet) => {
   return tweet.hasOwnProperty('retweeted_status')
@@ -69,10 +72,6 @@ const styles = {
 }
 
 class Tweet extends Component {
-  shouldComponentUpdate (nextProps) {
-    return this.props.tweet.id !== nextProps.tweet.id
-  }
-
   renderRetweetInfo () {
     if (isRetweet(this.props.tweet)) {
       const { classes } = this.props
@@ -121,7 +120,12 @@ class Tweet extends Component {
           </div>
 
           <div className={classes.body}>
-            <div className={classes.name}>{`${status.user.name}@${status.user.screen_name}`}</div>
+            <div className={classes.name}>
+              {`${status.user.name}@${status.user.screen_name}`}
+              {vagueTime.get({
+                to: new Date(status.created_at)
+              })}
+            </div>
 
             <div className={classes.bodyText}>
               <Linkify options={linkifyOptions} onClick={handleLink}>
