@@ -18,11 +18,13 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
-    loaders: [
+    rules: [
       {
-        exclude: /node_modules/,
         test: /\.jsx?$/,
-        loader: 'babel-loader'
+        exclude: /node_modules/,
+        use: [{
+          loader: 'babel-loader'
+        }]
       }
     ]
   },
