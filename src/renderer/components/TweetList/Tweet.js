@@ -62,12 +62,6 @@ const styles = {
     maxWidth: '100%',
     height: 'auto',
     borderRadius: 2
-  },
-  name: {
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    marginBottom: '0.25em'
   }
 }
 
@@ -120,13 +114,17 @@ class Tweet extends Component {
           </div>
 
           <div className={classes.body}>
-            <div className={classes.name}>
-              {`${status.user.name}@${status.user.screen_name}`}
-              <span styleName="time">
+            <div styleName="author">
+              <div styleName="author-name">
+                {status.user.name}
+                <span styleName="author-account">@{status.user.screen_name}</span>
+              </div>
+
+              <div styleName="author-time">
                 {vagueTime.get({
                   to: new Date(status.created_at)
                 })}
-              </span>
+              </div>
             </div>
 
             <div className={classes.bodyText}>
