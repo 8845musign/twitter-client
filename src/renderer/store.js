@@ -9,8 +9,5 @@ export default new Store({
   searchIds: [],
   notifycations: [],
   tweetValue: '',
-  isOpenTweet: false,
-  isPomping: false,
-  pompMax: 10,
-  pompCount: 0
+  isOpenTweet: false
 }).addMiddleware(logger)

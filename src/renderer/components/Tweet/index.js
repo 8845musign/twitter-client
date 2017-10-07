@@ -1,4 +1,4 @@
-import React, { Component } from 'React'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import TextField from 'material-ui/TextField'
@@ -11,8 +11,8 @@ import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 import CloseIcon from 'material-ui-icons/Close'
 import { connect } from 'react-redux'
-import { editTweetValue, startPomp, closeTweet, pomp } from '../../actions'
-import io from 'socket.io-client'
+import { editTweetValue, closeTweet } from '../../actions'
+import TwitterService from '../../services/twitter'
 
 const styles = {
   root: {
@@ -43,49 +43,16 @@ class Tweet extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount () {
-    if (process.env.SERVER) {
-      this.socket = io(process.env.SERVER)
-      this.socket.on('pomp', () => {
-        this.props.pomp()
-      })
-    } else {
-      this.socket = null
-    }
-  }
-
-  componentWillUnmount () {
-    if (this.socket) {
-      this.socket.disconnect()
-      this.socket = null
-    }
-  }
-
   handleKeyPress (e) {
     if (e.shiftKey && e.key === 'Enter') {
       e.preventDefault()
-      this.props.startPomp()
+      TwitterService.postTweet(this.props.tweetValue.trim())
+        .catch(error => console.log(error))
     }
   }
 
   handleChange (e) {
     this.props.editTweetValue(e.target.value)
-  }
-
-  renderPomp () {
-    if (!this.props.isPomping) return null
-
-    const { classes } = this.props
-
-    return (
-      <div className={classes.pomp}>
-        <div className={classes.pompHeading}>ROLL</div>
-
-        <div className={classes.pompCount}>{this.props.pompCount}</div>
-
-        <button className={classes.pompButton} type="button" onClick={this.props.pomp}>pomp</button>
-      </div>
-    )
   }
 
   render () {
@@ -128,15 +95,12 @@ class Tweet extends Component {
             value={this.props.tweetValue}
             onChange={this.handleChange}
             onKeyPress={this.handleKeyPress}
-            disabled={this.props.isPomping}
           />
 
           <FormHelperText>
             ( Shift + Enter ) {this.props.tweetValue.length} / 140
           </FormHelperText>
         </FormControl>
-
-        {this.renderPomp()}
       </Dialog>
     )
   }
@@ -145,11 +109,7 @@ class Tweet extends Component {
 Tweet.propTypes = {
   classes: PropTypes.object,
   tweetValue: PropTypes.string.isRequired,
-  isPomping: PropTypes.bool.isRequired,
-  pompCount: PropTypes.number.isRequired,
   editTweetValue: PropTypes.func.isRequired,
-  startPomp: PropTypes.func.isRequired,
-  pomp: PropTypes.func.isRequired,
   closeTweet: PropTypes.func.isRequired,
   isOpenTweet: PropTypes.bool.isRequired
 }
@@ -157,16 +117,12 @@ Tweet.propTypes = {
 const mapStateToProps = state => {
   return {
     tweetValue: state.tweetValue,
-    isPomping: state.isPomping,
-    pompCount: state.pompCount,
     isOpenTweet: state.isOpenTweet
   }
 }
 
 const mapDispatchToProps = {
   editTweetValue,
-  startPomp,
-  pomp,
   closeTweet
 }
 

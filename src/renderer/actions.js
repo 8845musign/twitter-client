@@ -1,5 +1,3 @@
-import TwitterService from './services/twitter'
-
 const isDuplicate = (tweet, ids) => {
   return ids.includes(tweet.id)
 }
@@ -47,58 +45,5 @@ export const editTweetValue = value => state => {
   return Object.assign({},
     state,
     { tweetValue: value }
-  )
-}
-
-export const startPomp = _ => state => {
-  return Object.assign({},
-    state,
-    {
-      isPomping: true,
-      pompCount: 0,
-      openTweet: false
-    }
-  )
-}
-
-const endPomp = state => {
-  TwitterService.postTweet(state.tweetValue.trim())
-    .catch(error => console.log(error))
-
-  return Object.assign({},
-    state,
-    {
-      isPomping: false,
-      pompCount: 0,
-      isOpenTweet: false,
-      tweetValue: ''
-    }
-  )
-}
-
-const pompUp = state => {
-  return Object.assign({},
-    state,
-    { pompCount: ++state.pompCount }
-  )
-}
-
-export const pomp = _ => state => {
-  if (state.isPomping && state.pompCount < state.pompMax) {
-    return pompUp(state)
-  }
-
-  if (state.isPomping && state.pompCount >= state.pompMax) {
-    return endPomp(state)
-  }
-
-  // when no pomping, nothing do.
-  return state
-}
-
-export const setPompMax = max => state => {
-  return Object.assign({},
-    state,
-    { pompMax: max }
   )
 }

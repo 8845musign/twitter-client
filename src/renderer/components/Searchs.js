@@ -1,9 +1,8 @@
-import React, { Component } from 'React'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addTweet, addTweets, setPompMax } from '../actions'
+import { addTweet, addTweets } from '../actions'
 import TwitterService from '../services/twitter'
-import { countRoll } from '../services/roller'
 import TweetList from './TweetList'
 
 class Searchs extends Component {
@@ -15,12 +14,6 @@ class Searchs extends Component {
       .then(result => {
         const { statuses } = result.data
         this.props.addTweets(statuses, 'search')
-
-        if (countRoll(statuses) > 100) {
-          this.props.setPompMax(5)
-        } else {
-          this.props.setPompMax(10)
-        }
 
         this.connectStream()
       })
@@ -50,8 +43,7 @@ class Searchs extends Component {
 Searchs.propTypes = {
   tweets: PropTypes.array.isRequired,
   addTweet: PropTypes.func.isRequired,
-  addTweets: PropTypes.func.isRequired,
-  setPompMax: PropTypes.func.isRequired
+  addTweets: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
@@ -62,8 +54,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   addTweet,
-  addTweets,
-  setPompMax
+  addTweets
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Searchs)
