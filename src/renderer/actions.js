@@ -1,3 +1,5 @@
+import TwitterService from './services/twitter'
+
 const isDuplicate = (tweet, ids) => {
   return ids.includes(tweet.id)
 }
@@ -46,4 +48,26 @@ export const editTweetValue = value => state => {
     state,
     { tweetValue: value }
   )
+}
+
+const clearTweet = _ => state => {
+  return Object.assign({},
+    state,
+    {
+      tweetValue: '',
+      closeTweet: false
+    }
+  )
+}
+
+export const postTweet = _ => state => async (dispatch, getState) => {
+  if (state.tweetValue === '') return state
+  const tweet = state.tweetValue.trim()
+
+  try {
+    await TwitterService.postTweet(tweet)
+    await dispatch(clearTweet())
+  } catch (err) {
+    console.log(err)
+  }
 }

@@ -1,4 +1,4 @@
-import Store from 'repatch'
+import Store, { thunk } from 'repatch'
 import { logger } from './middlewares'
 
 export default new Store({
@@ -10,4 +10,4 @@ export default new Store({
   notifycations: [],
   tweetValue: '',
   isOpenTweet: false
-}).addMiddleware(logger)
+}).addMiddleware(logger, thunk)

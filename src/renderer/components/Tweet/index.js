@@ -11,8 +11,7 @@ import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 import CloseIcon from 'material-ui-icons/Close'
 import { connect } from 'react-redux'
-import { editTweetValue, closeTweet } from '../../actions'
-import TwitterService from '../../services/twitter'
+import { editTweetValue, closeTweet, postTweet } from '../../actions'
 
 const styles = {
   root: {
@@ -44,10 +43,13 @@ class Tweet extends Component {
   }
 
   handleKeyPress (e) {
-    if (e.shiftKey && e.key === 'Enter') {
+    if (
+      e.shiftKey &&
+      e.key === 'Enter' &&
+      this.props.tweetValue !== ''
+    ) {
       e.preventDefault()
-      TwitterService.postTweet(this.props.tweetValue.trim())
-        .catch(error => console.log(error))
+      this.props.postTweet()
     }
   }
 
@@ -111,7 +113,8 @@ Tweet.propTypes = {
   tweetValue: PropTypes.string.isRequired,
   editTweetValue: PropTypes.func.isRequired,
   closeTweet: PropTypes.func.isRequired,
-  isOpenTweet: PropTypes.bool.isRequired
+  isOpenTweet: PropTypes.bool.isRequired,
+  postTweet: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
@@ -123,7 +126,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   editTweetValue,
-  closeTweet
+  closeTweet,
+  postTweet
 }
 
 const styled = withStyles(styles)(Tweet)
